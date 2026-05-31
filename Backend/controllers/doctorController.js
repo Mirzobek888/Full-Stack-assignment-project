@@ -36,6 +36,13 @@ function getDoctorById(req, res) {
 // Adds a new doctor record
 // -------------------------------------------------------
 function createDoctor(req, res) {
+    // Validate required fields before saving
+    const required = ['fullName', 'specialty', 'department', 'email', 'phone'];
+    const missing = required.filter(f => !req.body[f] || String(req.body[f]).trim() === '');
+    if (missing.length) {
+        return res.status(400).json({ error: `Missing required field(s): ${missing.join(', ')}` });
+    }
+
     // Step 1: Build the new doctor object with a unique ID
     const newDoctor = {
         id: generateId('DOC'),  // e.g. "DOC-MP8OU7TR-TU8R"
@@ -84,6 +91,14 @@ function deleteDoctor(req, res) {
 
     if (!doctor) {
         return res.status(404).json({ error: 'Doctor not found.' });
+    }
+
+    // Referential integrity: do not delete a doctor who still has patients assigned
+    const assignedPatients = readData('patients.json').filter(p => p.assignedDoctorId === req.params.id);
+    if (assignedPatients.length > 0) {
+        return res.status(409).json({
+            error: `Cannot delete this doctor: ${assignedPatients.length} patient(s) are still assigned. Reassign them first.`
+        });
     }
 
     const wasDeleted = deleteRecord('doctors.json', req.params.id);

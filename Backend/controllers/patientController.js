@@ -42,6 +42,13 @@ function getPatientById(req, res) {
 // Creates a new patient record from the request body
 // -------------------------------------------------------
 function createPatient(req, res) {
+    // Validate required fields before saving
+    const required = ['firstName', 'lastName', 'dateOfBirth', 'gender', 'assignedDoctorId'];
+    const missing = required.filter(f => !req.body[f] || String(req.body[f]).trim() === '');
+    if (missing.length) {
+        return res.status(400).json({ error: `Missing required field(s): ${missing.join(', ')}` });
+    }
+
     // Step 1: Get the patient data from the request body (sent by the form)
     const patientData = req.body;
 
@@ -99,6 +106,14 @@ function deletePatient(req, res) {
 
     if (!patient) {
         return res.status(404).json({ error: 'Patient not found.' });
+    }
+
+    // Referential integrity: do not delete a patient who still has diagnosis records
+    const linkedDiagnoses = readData('diagnoses.json').filter(d => d.patientId === req.params.id);
+    if (linkedDiagnoses.length > 0) {
+        return res.status(409).json({
+            error: `Cannot delete this patient: ${linkedDiagnoses.length} diagnosis record(s) are linked. Remove them first.`
+        });
     }
 
     // Step 2: Delete the patient from the JSON file

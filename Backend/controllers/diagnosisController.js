@@ -38,6 +38,13 @@ function getDiagnosisById(req, res) {
 // Adds a new diagnosis record for a patient
 // -------------------------------------------------------
 function createDiagnosis(req, res) {
+    // Validate required fields before saving
+    const required = ['patientId', 'icdCode', 'description', 'severity'];
+    const missing = required.filter(f => !req.body[f] || String(req.body[f]).trim() === '');
+    if (missing.length) {
+        return res.status(400).json({ error: `Missing required field(s): ${missing.join(', ')}` });
+    }
+
     // Step 1: Build the new diagnosis object
     const newDiagnosis = {
         id: generateId('DIA'),                            // Unique ID like "DIA-MP8OU7TR-TU8R"
