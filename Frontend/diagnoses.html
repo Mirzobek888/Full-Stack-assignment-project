@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnoses - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">Diagnoses</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="section-header">
+                    <div>
+                        <h2>Manage Diagnoses</h2>
+                        <p class="text-muted">Manage patient disease and diagnosis records</p>
+                    </div>
+                    <a href="diagnosis-form.html" class="btn-primary" id="add-diag-btn"><i class="fas fa-plus"></i> Add Diagnosis</a>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <div class="form-row">
+                        <div class="search-box form-col" style="width:100%;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Search by ICD code, patient name, or diagnosis">
+                        </div>
+                        <select class="form-control form-col" id="filter-category" style="max-width: 220px; margin-left:8px;">
+                            <option value="">All Categories</option>
+                        </select>
+                        <select class="form-control form-col" id="filter-severity" style="max-width: 200px;">
+                            <option value="">All Severities</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="table-container">
+                        <table class="table" id="diagnoses-table">
+                            <thead>
+                                <tr>
+                                    <th>ICD Code</th>
+                                    <th>Category</th>
+                                    <th>Patient</th>
+                                    <th>Assigned Doctor</th>
+                                    <th>Severity</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/diagnoses.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.requireRole(['administrator', 'clinician']);
+        });
+    </script>
+</body>
+</html>

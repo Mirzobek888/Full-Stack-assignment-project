@@ -1,0 +1,7 @@
+[
+  { "id": "CAT-001", "name": "Cardiology" },
+  { "id": "CAT-002", "name": "Neurology" },
+  { "id": "CAT-003", "name": "Dermatology" },
+  { "id": "CAT-004", "name": "Orthopaedics" },
+  { "id": "CAT-005", "name": "General Practice" }
+]

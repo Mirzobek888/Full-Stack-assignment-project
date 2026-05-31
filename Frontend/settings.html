@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">System Settings</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="section-header">
+                    <div>
+                        <h2>Clinic Configuration</h2>
+                        <p class="text-muted">Manage global clinic settings and preferences</p>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="max-width: 800px;">
+                    <form id="settings-form">
+                        <h3 style="margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Clinic Information</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Clinic Name</label>
+                                <input type="text" class="form-control" id="clinicName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Clinic Address</label>
+                                <input type="text" class="form-control" id="clinicAddress">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Contact Email</label>
+                                <input type="email" class="form-control" id="clinicEmail">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Emergency Phone</label>
+                                <input type="tel" class="form-control" id="emergencyNumber">
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">System Preferences</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Timezone</label>
+                                <select class="form-control" id="timezone">
+                                    <option value="Asia/Tashkent">Asia/Tashkent</option>
+                                    <option value="UTC">UTC</option>
+                                    <option value="America/New_York">America/New_York</option>
+                                    <option value="Europe/London">Europe/London</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Operating Hours</label>
+                                <input type="text" class="form-control" id="operatingHours" placeholder="e.g. 08:00 - 18:00">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary" id="save-btn">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.requireRole(['administrator']);
+            layout.init();
+
+            try {
+                const settings = await api.get('/settings');
+                document.getElementById('clinicName').value = settings.clinicName || '';
+                document.getElementById('clinicAddress').value = settings.clinicAddress || '';
+                document.getElementById('clinicEmail').value = settings.clinicEmail || '';
+                document.getElementById('emergencyNumber').value = settings.emergencyNumber || '';
+                document.getElementById('timezone').value = settings.timezone || 'Asia/Tashkent';
+                document.getElementById('operatingHours').value = settings.operatingHours || '';
+            } catch (err) {
+                layout.showToast('Failed to load settings', 'error');
+            }
+
+            document.getElementById('settings-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('save-btn');
+                btn.disabled = true;
+                btn.textContent = 'Saving...';
+
+                const data = {
+                    clinicName: document.getElementById('clinicName').value,
+                    clinicAddress: document.getElementById('clinicAddress').value,
+                    clinicEmail: document.getElementById('clinicEmail').value,
+                    emergencyNumber: document.getElementById('emergencyNumber').value,
+                    timezone: document.getElementById('timezone').value,
+                    operatingHours: document.getElementById('operatingHours').value
+                };
+
+                try {
+                    await api.put('/settings', data);
+                    layout.showToast('Settings saved successfully');
+                } catch (err) {
+                    layout.showToast(err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Save Settings';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

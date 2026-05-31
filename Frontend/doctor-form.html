@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Form - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title" id="page-title">Add Doctor</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+                    <form id="doctor-form">
+                        <h3 style="margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Professional Details</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Specialty *</label>
+                                <input type="text" class="form-control" id="specialty" required>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Department *</label>
+                                <select class="form-control" id="department" required>
+                                    <option value="">Select Department</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Orthopaedics">Orthopaedics</option>
+                                    <option value="General Practice">General Practice</option>
+                                    <option value="Diagnostics">Diagnostics</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Contact Information</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone">
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Availability</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Office Room</label>
+                                <input type="text" class="form-control" id="officeRoom">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Status</label>
+                                <select class="form-control" id="status">
+                                    <option value="Available">Available</option>
+                                    <option value="Busy">Busy</option>
+                                    <option value="Off Duty">Off Duty</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Start Time</label>
+                                <input type="time" class="form-control" id="startTime">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">End Time</label>
+                                <input type="time" class="form-control" id="endTime">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="doctors.html" class="btn-secondary">Cancel</a>
+                            <button type="submit" class="btn-primary">Save Doctor</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.requireRole(['administrator']); // Admin only
+            layout.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const docId = urlParams.get('id');
+
+            if (docId) {
+                document.getElementById('page-title').textContent = 'Edit Doctor';
+                try {
+                    const doc = await api.get(`/doctors/${docId}`);
+                    document.getElementById('fullName').value = doc.fullName;
+                    document.getElementById('specialty').value = doc.specialty;
+                    document.getElementById('department').value = doc.department;
+                    document.getElementById('email').value = doc.email;
+                    document.getElementById('phone').value = doc.phone;
+                    document.getElementById('officeRoom').value = doc.officeRoom;
+                    document.getElementById('status').value = doc.status;
+                    document.getElementById('startTime').value = doc.startTime;
+                    document.getElementById('endTime').value = doc.endTime;
+                } catch (err) {
+                    layout.showToast('Failed to load doctor', 'error');
+                }
+            }
+
+            document.getElementById('doctor-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const data = {
+                    fullName: document.getElementById('fullName').value,
+                    specialty: document.getElementById('specialty').value,
+                    department: document.getElementById('department').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    officeRoom: document.getElementById('officeRoom').value,
+                    status: document.getElementById('status').value,
+                    startTime: document.getElementById('startTime').value,
+                    endTime: document.getElementById('endTime').value,
+                    availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] // Default
+                };
+
+                try {
+                    if (docId) {
+                        await api.put(`/doctors/${docId}`, data);
+                        layout.showToast('Doctor updated successfully');
+                    } else {
+                        await api.post('/doctors', data);
+                        layout.showToast('Doctor created successfully');
+                    }
+                    setTimeout(() => window.location.href = 'doctors.html', 1500);
+                } catch (err) {
+                    layout.showToast(err.message, 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

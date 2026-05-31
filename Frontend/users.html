@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: var(--bg-panel-strong);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-md);
+            width: 100%;
+            max-width: 500px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .modal-header h3 { margin: 0; }
+        .close-btn {
+            background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer;
+        }
+        .close-btn:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">User Management</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="section-header">
+                    <div>
+                        <h2>System Users</h2>
+                        <p class="text-muted">Manage staff accounts and role-based access</p>
+                    </div>
+                    <button class="btn-primary" onclick="openUserModal()"><i class="fas fa-plus"></i> Add User</button>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <div class="form-row">
+                        <div class="search-box form-col" style="width:100%;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Search by name or username">
+                        </div>
+                        <select class="form-control form-col" id="filter-role" style="max-width: 200px;">
+                            <option value="">All Roles</option>
+                            <option value="administrator">Administrator</option>
+                            <option value="clinician">Clinician</option>
+                            <option value="receptionist">Receptionist</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="table-container">
+                        <table class="table" id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Department</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal-overlay" id="user-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add User</h3>
+                <button class="close-btn" onclick="closeUserModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="user-form">
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" class="form-control" id="u-name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Username *</label>
+                    <input type="text" class="form-control" id="u-username" required>
+                </div>
+                <div class="form-group" id="pwd-group">
+                    <label class="form-label">Password *</label>
+                    <input type="password" class="form-control" id="u-password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role *</label>
+                    <select class="form-control" id="u-role" required>
+                        <option value="administrator">Administrator</option>
+                        <option value="clinician">Clinician</option>
+                        <option value="receptionist">Receptionist</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <input type="text" class="form-control" id="u-dept">
+                </div>
+                <div class="form-actions" style="margin-top: 24px; padding-top:0; border:none;">
+                    <button type="button" class="btn-secondary" onclick="closeUserModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/users.js"></script>
+</body>
+</html>

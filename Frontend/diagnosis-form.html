@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Diagnosis - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title" id="page-title">Add Diagnosis Record</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+                    <form id="diagnosis-form">
+                        <h3 style="margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Patient Selection</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Select Patient *</label>
+                                <select class="form-control" id="patientId" required>
+                                    <option value="">Select Patient</option>
+                                    <!-- Options via JS -->
+                                </select>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Assigned Doctor</label>
+                                <select class="form-control" id="assignedDoctorId">
+                                    <option value="">Select Doctor</option>
+                                    <!-- Options via JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Diagnosis Details</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">ICD Code *</label>
+                                <input type="text" class="form-control" id="icdCode" required placeholder="e.g. I10">
+                            </div>
+                            <div class="form-group form-col" style="flex:1;">
+                                <label class="form-label">Category</label>
+                                <select class="form-control" id="categorySelect" required>
+                                    <option value="">Select Category</option>
+                                    <option value="__add_new__">+ Add new category</option>
+                                </select>
+                                <input type="text" class="form-control" id="newCategoryInput" placeholder="Enter new category" style="display:none; margin-top:8px;" />
+                            </div>
+                            <div class="form-group form-col" style="flex:2;">
+                                <label class="form-label">Diagnosis Description *</label>
+                                <input type="text" class="form-control" id="description" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Severity Level *</label>
+                                <select class="form-control" id="severity" required>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="Critical">Critical</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Diagnosis Date *</label>
+                                <input type="date" class="form-control" id="diagnosisDate" required>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Clinical Notes</h3>
+                        <div class="form-group">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="clinicalNotes" placeholder="Enter clinical notes..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col" style="display:flex; align-items:center;">
+                                <label class="checkbox-group">
+                                    <input type="checkbox" id="followUpRequired">
+                                    <span style="font-size: 14px; color: #fff;">Follow-up Required</span>
+                                </label>
+                            </div>
+                            <div class="form-group form-col" id="followUpDateGroup" style="display:none;">
+                                <label class="form-label">Follow-up Date</label>
+                                <input type="date" class="form-control" id="followUpDate">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <p style="margin-right: auto; color: var(--muted); font-size: 13px; align-self: center;">
+                                <i class="fas fa-link"></i> Diagnosis records are linked to the patient profile.
+                            </p>
+                            <a href="diagnoses.html" class="btn-secondary">Cancel</a>
+                            <button type="submit" class="btn-primary" id="save-btn">Save Diagnosis</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script>
+        let allPatients = [];
+        let allDoctors = [];
+        let allDiagnoses = [];
+        let allCategories = [];
+        let catSelect = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.requireRole(['administrator', 'clinician']);
+            layout.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const diagId = urlParams.get('id');
+            const prefillPatId = urlParams.get('patientId');
+            
+            document.getElementById('diagnosisDate').valueAsDate = new Date();
+
+            document.getElementById('followUpRequired').addEventListener('change', (e) => {
+                document.getElementById('followUpDateGroup').style.display = e.target.checked ? 'block' : 'none';
+            });
+
+            try {
+                [allPatients, allDoctors, allDiagnoses] = await Promise.all([
+                    api.get('/patients'),
+                    api.get('/doctors'),
+                    api.get('/diagnoses').catch(()=>[])
+                ]);
+
+                const patSelect = document.getElementById('patientId');
+                patSelect.innerHTML = '<option value="">Select Patient</option>' + 
+                    allPatients.map(p => `<option value="${p.id}">${p.firstName} ${p.lastName} (${p.id})</option>`).join('');
+
+                // populate doctor select
+                const docSelect = document.getElementById('assignedDoctorId');
+                docSelect.innerHTML = '<option value="">Select Doctor</option>' +
+                    allDoctors.map(d => {
+                        const doctorLabel = d.specialty ? `${d.fullName} — ${d.specialty}` : `${d.fullName} (${d.id})`;
+                        return `<option value="${d.id}">${doctorLabel}</option>`;
+                    }).join('');
+
+                patSelect.addEventListener('change', (e) => {
+                    const pat = allPatients.find(p => p.id === e.target.value);
+                    if (pat && pat.assignedDoctorId) {
+                        const doc = allDoctors.find(d => d.id === pat.assignedDoctorId);
+                        if (doc) {
+                            docSelect.value = doc.id;
+                        }
+                    } else {
+                        docSelect.value = '';
+                    }
+                });
+
+                // populate categories from backend
+                catSelect = document.getElementById('categorySelect');
+                try {
+                    allCategories = await api.get('/diagnosis-categories').catch(()=>[]);
+                    if (Array.isArray(allCategories)) {
+                        allCategories.sort((a,b)=>a.name.localeCompare(b.name));
+                        allCategories.forEach(c => {
+                            const opt = document.createElement('option'); opt.value = c.name; opt.textContent = c.name;
+                            catSelect.insertBefore(opt, catSelect.querySelector('option[value="__add_new__"]'));
+                        });
+                    }
+                } catch (e) {
+                    console.warn('Failed to load categories', e);
+                }
+
+                catSelect.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    const newInput = document.getElementById('newCategoryInput');
+                    if (val === '__add_new__') {
+                        newInput.style.display = 'block';
+                        newInput.focus();
+                    } else {
+                        newInput.style.display = 'none';
+                        newInput.value = '';
+                    }
+                });
+
+                if (prefillPatId) {
+                    patSelect.value = prefillPatId;
+                    patSelect.dispatchEvent(new Event('change'));
+                }
+
+            } catch (err) {
+                console.error('Failed to load ref data');
+            }
+
+            if (diagId) {
+                document.getElementById('page-title').textContent = 'Edit Diagnosis Record';
+                try {
+                    const diag = await api.get(`/diagnoses/${diagId}`);
+                    document.getElementById('patientId').value = diag.patientId;
+                    document.getElementById('patientId').dispatchEvent(new Event('change'));
+                    
+                    document.getElementById('icdCode').value = diag.icdCode;
+                    document.getElementById('description').value = diag.description;
+                    // prefill category if present
+                    if (diag.category) {
+                        const catSel = document.getElementById('categorySelect');
+                        const exists = Array.from(catSel.options).some(o => o.value === diag.category);
+                        if (exists) {
+                            catSel.value = diag.category;
+                        } else {
+                            catSel.value = '__add_new__';
+                            const newInput = document.getElementById('newCategoryInput');
+                            newInput.style.display = 'block';
+                            newInput.value = diag.category;
+                        }
+                    }
+                    document.getElementById('severity').value = diag.severity;
+                    document.getElementById('diagnosisDate').value = diag.diagnosisDate;
+                    document.getElementById('clinicalNotes').value = diag.clinicalNotes;
+
+                    // prefill assigned doctor if present
+                    if (diag.assignedDoctorId) {
+                        const docSel = document.getElementById('assignedDoctorId');
+                        docSel.value = diag.assignedDoctorId;
+                    }
+                    
+                    if (diag.followUpRequired) {
+                        document.getElementById('followUpRequired').checked = true;
+                        document.getElementById('followUpDateGroup').style.display = 'block';
+                        document.getElementById('followUpDate').value = diag.followUpDate;
+                    }
+                } catch (err) {
+                    layout.showToast('Failed to load diagnosis', 'error');
+                }
+            }
+
+            document.getElementById('diagnosis-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                // determine category value
+                const catSel = document.getElementById('categorySelect');
+                const newCatInput = document.getElementById('newCategoryInput');
+                const categoryValue = catSel.value === '__add_new__' ? (newCatInput.value || '') : catSel.value;
+
+                if (!categoryValue) {
+                    layout.showToast('Please select or enter a diagnosis category.', 'error');
+                    return;
+                }
+
+                // if user added a new category, create it first
+                if (catSel.value === '__add_new__') {
+                    const exists = allCategories.some(c => c.name.toLowerCase() === categoryValue.toLowerCase());
+                    if (!exists) {
+                        try {
+                            const created = await api.post('/diagnosis-categories', { name: categoryValue });
+                            if (created && created.name) {
+                                allCategories.push(created);
+                                const opt = document.createElement('option'); opt.value = created.name; opt.textContent = created.name;
+                                catSelect.insertBefore(opt, catSelect.querySelector('option[value="__add_new__"]'));
+                            }
+                        } catch (e) {
+                            console.warn('Failed to create category', e);
+                        }
+                    }
+                }
+
+                const data = {
+                    patientId: document.getElementById('patientId').value,
+                    assignedDoctorId: document.getElementById('assignedDoctorId').value,
+                    icdCode: document.getElementById('icdCode').value,
+                    description: document.getElementById('description').value,
+                    category: categoryValue,
+                    severity: document.getElementById('severity').value,
+                    diagnosisDate: document.getElementById('diagnosisDate').value,
+                    clinicalNotes: document.getElementById('clinicalNotes').value,
+                    followUpRequired: document.getElementById('followUpRequired').checked,
+                    followUpDate: document.getElementById('followUpDate').value
+                };
+
+                try {
+                    if (diagId) {
+                        await api.put(`/diagnoses/${diagId}`, data);
+                        layout.showToast('Diagnosis updated successfully');
+                    } else {
+                        await api.post('/diagnoses', data);
+                        layout.showToast('Diagnosis created successfully');
+                    }
+                    setTimeout(() => window.location.href = 'diagnoses.html', 1500);
+                } catch (err) {
+                    layout.showToast(err.message, 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

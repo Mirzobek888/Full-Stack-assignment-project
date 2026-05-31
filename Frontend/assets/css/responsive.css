@@ -1,0 +1,84 @@
+/* Responsive Styles */
+
+/* Print Styles for Reports */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area, .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #fff !important;
+    color: #000 !important;
+    padding: 20px;
+  }
+  .sidebar, .topbar, .btn, .no-print {
+    display: none !important;
+  }
+  .glass-card {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Tablets and below */
+@media (max-width: 1024px) {
+  .dashboard-sections {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    height: 100vh;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .page-container {
+    padding: 16px;
+  }
+
+  .quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mobile-menu-btn {
+    display: block !important;
+  }
+
+  .search-box {
+    display: none; /* Hide search on mobile header for simplicity, or make it collapsible */
+  }
+}
+
+/* Mobile Menu Button - Hidden by default on desktop */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  color: #fff;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+}

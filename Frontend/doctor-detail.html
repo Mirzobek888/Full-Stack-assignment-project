@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal), var(--cyan));
+            color: #000;
+            font-size: 36px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-info h1 {
+            margin: 0 0 8px 0;
+            font-size: 2rem;
+        }
+        .profile-info p {
+            color: var(--muted);
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 12px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+        .info-card {
+            padding: 20px;
+        }
+        .info-label {
+            font-size: 13px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .info-value {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">Doctor Profile</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container" id="profile-content" style="display:none;">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="doc-avatar"></div>
+                    <div class="profile-info">
+                        <h1 id="doc-name"></h1>
+                        <p><i class="fas fa-stethoscope"></i> <span id="doc-specialty"></span> - <span id="doc-dept"></span></p>
+                        <p><span class="badge badge-success" id="doc-status"></span></p>
+                    </div>
+                    <div class="profile-actions">
+                        <a href="schedules.html" class="btn-secondary">View Schedule</a>
+                        <a href="#" id="edit-doc-btn" class="btn-primary" style="display:none;">Edit Doctor</a>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom: 20px;">Contact Information</h3>
+                    <div class="info-grid">
+                        <div>
+                            <div class="info-label">Email</div>
+                            <div class="info-value" id="doc-email"></div>
+                        </div>
+                        <div>
+                            <div class="info-label">Phone</div>
+                            <div class="info-value" id="doc-phone"></div>
+                        </div>
+                        <div>
+                            <div class="info-label">Office Room</div>
+                            <div class="info-value" id="doc-room"></div>
+                        </div>
+                        <div>
+                            <div class="info-label">Working Hours</div>
+                            <div class="info-value"><span id="doc-start"></span> - <span id="doc-end"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 20px;">Available Days</h3>
+                    <div id="doc-days" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.requireAuth();
+            layout.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const docId = urlParams.get('id');
+
+            if (!docId) {
+                window.location.href = 'doctors.html';
+                return;
+            }
+
+            if (auth.hasRole(['administrator'])) {
+                const editBtn = document.getElementById('edit-doc-btn');
+                editBtn.style.display = 'inline-block';
+                editBtn.href = `doctor-form.html?id=${docId}`;
+            }
+
+            try {
+                const doc = await api.get(`/doctors/${docId}`);
+                
+                document.getElementById('doc-avatar').textContent = layout.getAvatarInitials(doc.fullName);
+                document.getElementById('doc-name').textContent = doc.fullName;
+                document.getElementById('doc-specialty').textContent = doc.specialty;
+                document.getElementById('doc-dept').textContent = doc.department;
+                document.getElementById('doc-status').textContent = doc.status;
+                
+                if (doc.status === 'Available') document.getElementById('doc-status').className = 'badge badge-success';
+                else if (doc.status === 'Busy') document.getElementById('doc-status').className = 'badge badge-warning';
+                else document.getElementById('doc-status').className = 'badge badge-neutral';
+
+                document.getElementById('doc-email').textContent = doc.email;
+                document.getElementById('doc-phone').textContent = doc.phone;
+                document.getElementById('doc-room').textContent = doc.officeRoom;
+                document.getElementById('doc-start').textContent = doc.startTime;
+                document.getElementById('doc-end').textContent = doc.endTime;
+
+                document.getElementById('doc-days').innerHTML = (doc.availableDays || []).map(day => `
+                    <span style="background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border-soft);">${day}</span>
+                `).join('');
+
+                document.getElementById('profile-content').style.display = 'block';
+
+            } catch (err) {
+                layout.showToast('Failed to load doctor profile', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

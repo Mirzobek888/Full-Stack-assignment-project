@@ -1,0 +1,29 @@
+[
+  {
+    "id": "USR-001",
+    "username": "admin",
+    "password": "admin123",
+    "name": "Mirzobek Tursunov",
+    "role": "administrator",
+    "department": "Administration",
+    "status": "Active"
+  },
+  {
+    "id": "USR-002",
+    "username": "doctor",
+    "password": "doctor123",
+    "name": "Diyorbek Rasulov",
+    "role": "clinician",
+    "department": "Cardiology",
+    "status": "Active"
+  },
+  {
+    "id": "USR-003",
+    "username": "reception",
+    "password": "reception123",
+    "name": "Madina Ismoilova",
+    "role": "receptionist",
+    "department": "Reception",
+    "status": "Active"
+  }
+]

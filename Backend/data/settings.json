@@ -1,0 +1,24 @@
+{
+  "clinicName": "CareTrack Clinic",
+  "clinicEmail": "contact@caretrack.uz",
+  "emergencyNumber": "+998 71 123 45 67",
+  "departments": [
+    "General Practice",
+    "Cardiology",
+    "Neurology",
+    "Dermatology",
+    "Orthopaedics",
+    "Diagnostics",
+    "Reception",
+    "Administration"
+  ],
+  "specialties": [
+    "General Practitioner",
+    "Cardiologist",
+    "Neurologist",
+    "Dermatologist",
+    "Orthopaedic Specialist",
+    "Radiologist"
+  ],
+  "sessionTimeout": "60"
+}

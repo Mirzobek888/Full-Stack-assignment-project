@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Patient - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title" id="page-title">Register New Patient</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+                    <form id="patient-form">
+                        <h3 style="margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Date of Birth *</label>
+                                <input type="date" class="form-control" id="dateOfBirth" required>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Gender</label>
+                                <select class="form-control" id="gender">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Contact Information</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address">
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Emergency Contact</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" id="emergencyContactName">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="emergencyContactPhone">
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px; margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;">Doctor Assignment</h3>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Department *</label>
+                                <select class="form-control" id="department" required>
+                                    <option value="">Select Department</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Orthopaedics">Orthopaedics</option>
+                                    <option value="General Practice">General Practice</option>
+                                    <option value="Diagnostics">Diagnostics</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Assigned Doctor *</label>
+                                <select class="form-control" id="assignedDoctorId" required>
+                                    <option value="">Select Doctor</option>
+                                    <!-- Populated via JS -->
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label">Status</label>
+                                <select class="form-control" id="status">
+                                    <option value="Stable">Stable</option>
+                                    <option value="Monitoring">Monitoring</option>
+                                    <option value="Critical">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Registration Notes</label>
+                            <textarea class="form-control" id="registrationNotes" placeholder="Enter any specific notes regarding the patient..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <p style="margin-right: auto; color: var(--muted); font-size: 13px; align-self: center;">
+                                <i class="fas fa-lock"></i> Patient data is stored securely and visible only to authorized clinic staff.
+                            </p>
+                            <a href="patients.html" class="btn-secondary">Cancel</a>
+                            <button type="submit" class="btn-primary" id="save-btn">Register Patient</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.requireRole(['administrator', 'receptionist', 'clinician']);
+            layout.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const patId = urlParams.get('id');
+            const saveBtn = document.getElementById('save-btn');
+
+            let allDoctors = [];
+            try {
+                allDoctors = await api.get('/doctors');
+                const docSelect = document.getElementById('assignedDoctorId');
+                docSelect.innerHTML = '<option value="">Select Doctor</option>' + allDoctors.map(d => `<option value="${d.id}">${d.fullName} (${d.specialty})</option>`).join('');
+            } catch (err) {
+                console.error('Failed to load doctors');
+            }
+
+            if (patId) {
+                document.getElementById('page-title').textContent = 'Edit Patient';
+                saveBtn.textContent = 'Save Patient';
+                
+                // Clinician cannot edit some fields easily, but assignment says clinician can edit patient information.
+                // Admin and Clinician can edit. Receptionist shouldn't edit? Assignment: "Receptionist cannot edit patient".
+                if (auth.hasRole(['receptionist'])) {
+                    layout.showToast('You do not have permission to edit patients', 'error');
+                    setTimeout(() => window.location.href = 'patients.html', 1500);
+                    return;
+                }
+
+                try {
+                    const pat = await api.get(`/patients/${patId}`);
+                    document.getElementById('firstName').value = pat.firstName;
+                    document.getElementById('lastName').value = pat.lastName;
+                    document.getElementById('dateOfBirth').value = pat.dateOfBirth;
+                    document.getElementById('gender').value = pat.gender;
+                    document.getElementById('phone').value = pat.phone;
+                    document.getElementById('email').value = pat.email;
+                    document.getElementById('address').value = pat.address;
+                    document.getElementById('emergencyContactName').value = pat.emergencyContactName;
+                    document.getElementById('emergencyContactPhone').value = pat.emergencyContactPhone;
+                    document.getElementById('department').value = pat.department;
+                    document.getElementById('assignedDoctorId').value = pat.assignedDoctorId;
+                    document.getElementById('status').value = pat.status;
+                    document.getElementById('registrationNotes').value = pat.registrationNotes;
+                } catch (err) {
+                    layout.showToast('Failed to load patient', 'error');
+                }
+            } else {
+                if (auth.hasRole(['clinician'])) {
+                    // Clinician can edit but maybe not register? Assignment: "Admin can register/edit, Receptionist can register, Clinician can edit".
+                    layout.showToast('You do not have permission to register patients', 'error');
+                    setTimeout(() => window.location.href = 'patients.html', 1500);
+                    return;
+                }
+            }
+
+            document.getElementById('patient-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const data = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    dateOfBirth: document.getElementById('dateOfBirth').value,
+                    gender: document.getElementById('gender').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    emergencyContactName: document.getElementById('emergencyContactName').value,
+                    emergencyContactPhone: document.getElementById('emergencyContactPhone').value,
+                    department: document.getElementById('department').value,
+                    assignedDoctorId: document.getElementById('assignedDoctorId').value,
+                    status: document.getElementById('status').value,
+                    registrationNotes: document.getElementById('registrationNotes').value
+                };
+
+                try {
+                    if (patId) {
+                        await api.put(`/patients/${patId}`, data);
+                        layout.showToast('Patient updated successfully');
+                    } else {
+                        await api.post('/patients', data);
+                        layout.showToast('Patient registered successfully');
+                    }
+                    setTimeout(() => window.location.href = 'patients.html', 1500);
+                } catch (err) {
+                    layout.showToast(err.message, 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

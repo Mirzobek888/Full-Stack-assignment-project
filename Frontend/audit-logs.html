@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Logs - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .log-method {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .log-method.get { background: rgba(53, 208, 127, 0.2); color: var(--success); }
+        .log-method.post { background: rgba(25, 211, 197, 0.2); color: var(--teal); }
+        .log-method.put { background: rgba(247, 201, 72, 0.2); color: var(--warning); }
+        .log-method.delete { background: rgba(255, 92, 122, 0.2); color: var(--danger); }
+        .log-method.logout { background: rgba(255, 92, 122, 0.15); color: var(--danger); }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">Audit Logs</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="section-header">
+                    <div>
+                        <h2>System Audit Trail</h2>
+                        <p class="text-muted">Monitor user activity and system modifications</p>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <div class="form-row">
+                        <div class="search-box form-col">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Search logs by user, action, or entity">
+                        </div>
+                        <select class="form-control form-col" id="filter-role" style="max-width: 200px;">
+                            <option value="">All Roles</option>
+                            <option value="administrator">Administrator</option>
+                            <option value="clinician">Clinician</option>
+                            <option value="receptionist">Receptionist</option>
+                        </select>
+                        <select class="form-control form-col" id="filter-action" style="max-width: 200px;">
+                            <option value="">All Actions</option>
+                            <option value="Login">Login</option>
+                            <option value="Logout">Logout</option>
+                            <option value="Created">Created</option>
+                            <option value="Updated">Updated</option>
+                            <option value="Deleted">Deleted</option>
+                            <option value="Generated">Generated</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="table-container">
+                        <table class="table" id="logs-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>User</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                    <th>Entity</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script>
+        let allLogs = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.requireRole(['administrator']);
+            layout.init();
+
+            await loadLogs();
+
+            document.getElementById('search-input').addEventListener('input', renderLogs);
+            document.getElementById('filter-role').addEventListener('change', renderLogs);
+            document.getElementById('filter-action').addEventListener('change', renderLogs);
+        });
+
+        async function loadLogs() {
+            try {
+                allLogs = await api.get('/audit-logs');
+                renderLogs();
+            } catch (err) {
+                layout.showToast('Failed to load audit logs', 'error');
+            }
+        }
+
+        function renderLogs() {
+            const tbody = document.querySelector('#logs-table tbody');
+            if (!tbody) return;
+
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const roleFilter = document.getElementById('filter-role').value.toLowerCase();
+            const actionFilter = document.getElementById('filter-action').value.toLowerCase();
+
+            // Filter logs by search term, role, and action
+            const filtered = allLogs.filter(log => {
+                const matchesSearch = (log.user || '').toLowerCase().includes(searchTerm) || 
+                                     (log.action || '').toLowerCase().includes(searchTerm) || 
+                                     (log.entity || '').toLowerCase().includes(searchTerm) ||
+                                     (log.details || '').toLowerCase().includes(searchTerm);
+                const matchesRole = !roleFilter || (log.role || '').toLowerCase() === roleFilter;
+                const matchesAction = !actionFilter || (log.action || '').toLowerCase() === actionFilter;
+                return matchesSearch && matchesRole && matchesAction;
+            });
+
+            // Map each log to a table row
+            tbody.innerHTML = filtered.map(log => {
+                // Pick a color class based on the action type
+                const actionClass = log.action === 'Deleted' ? 'delete' 
+                    : log.action === 'Logout' ? 'logout'
+                    : log.action === 'Created' ? 'post' 
+                    : log.action === 'Updated' ? 'put' 
+                    : 'get';
+
+                // Capitalize the role for nice display
+                const roleDisplay = log.role 
+                    ? log.role.charAt(0).toUpperCase() + log.role.slice(1) 
+                    : '-';
+
+                // Show details as plain text (not JSON)
+                const detailsText = typeof log.details === 'object' 
+                    ? JSON.stringify(log.details) 
+                    : (log.details || '-');
+
+                return `
+                <tr>
+                    <td style="white-space:nowrap; color:var(--muted); font-size:13px;">${new Date(log.timestamp).toLocaleString()}</td>
+                    <td style="font-weight:600;">${log.user || '-'}</td>
+                    <td><span style="font-size:12px; color:var(--teal); text-transform:capitalize;">${roleDisplay}</span></td>
+                    <td><span class="log-method ${actionClass}">${log.action || '-'}</span></td>
+                    <td>${log.entity || '-'}</td>
+                    <td style="font-size:12px; color:var(--muted); max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${detailsText}">
+                        ${detailsText}
+                    </td>
+                </tr>
+                `;
+            }).join('');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No logs found</td></tr>`;
+            }
+        }
+    </script>
+</body>
+</html>

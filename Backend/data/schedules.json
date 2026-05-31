@@ -1,0 +1,26 @@
+[
+  {
+    "id": "SCH-001",
+    "doctorId": "DOC-001",
+    "dayOfWeek": "Monday",
+    "startTime": "09:00",
+    "endTime": "13:00",
+    "room": "A-204"
+  },
+  {
+    "id": "SCH-002",
+    "doctorId": "DOC-001",
+    "dayOfWeek": "Wednesday",
+    "startTime": "09:00",
+    "endTime": "17:00",
+    "room": "A-204"
+  },
+  {
+    "id": "SCH-003",
+    "doctorId": "DOC-002",
+    "dayOfWeek": "Tuesday",
+    "startTime": "10:00",
+    "endTime": "16:00",
+    "room": "B-102"
+  }
+]

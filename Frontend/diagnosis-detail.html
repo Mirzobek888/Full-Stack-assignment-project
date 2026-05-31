@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis Detail - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .info-label {
+            font-size: 13px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .info-value {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+        .clinical-notes {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">Diagnosis Detail</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container" id="detail-content" style="display:none;">
+                <div class="glass-card">
+                    <div class="detail-header">
+                        <div>
+                            <h2 style="margin:0 0 8px 0; color:var(--teal);"><span id="diag-icd"></span> - <span id="diag-desc"></span></h2>
+                            <p style="margin:0;"><span class="badge" id="diag-severity"></span></p>
+                        </div>
+                        <div style="display:flex; gap:12px;">
+                            <a href="#" id="back-pat-btn" class="btn-secondary">Back to Patient Profile</a>
+                            <a href="#" id="edit-diag-btn" class="btn-primary" style="display:none;">Edit Diagnosis</a>
+                        </div>
+                    </div>
+
+                    <div class="detail-grid">
+                        <div>
+                            <div class="info-label">Patient</div>
+                            <div class="info-value" id="diag-patient"></div>
+
+                            <div class="info-label">Assigned Doctor</div>
+                            <div class="info-value" id="diag-doctor"></div>
+                        </div>
+                        <div>
+                            <div class="info-label">Diagnosis Date</div>
+                            <div class="info-value" id="diag-date"></div>
+
+                            <div class="info-label">Last Updated</div>
+                            <div class="info-value" id="diag-updated"></div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top:24px; padding-top:24px; border-top: 1px solid var(--border-soft);">Clinical Notes</h3>
+                    <div class="clinical-notes" id="diag-notes"></div>
+
+                    <div id="follow-up-section" style="margin-top: 24px; display:none;">
+                        <h4 style="color:var(--warning);"><i class="fas fa-exclamation-triangle"></i> Follow-up Required</h4>
+                        <p>Scheduled Date: <strong id="diag-followup-date"></strong></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            auth.requireRole(['administrator', 'clinician']);
+            layout.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const diagId = urlParams.get('id');
+
+            if (!diagId) {
+                window.location.href = 'diagnoses.html';
+                return;
+            }
+
+            document.getElementById('edit-diag-btn').style.display = 'inline-block';
+            document.getElementById('edit-diag-btn').href = `diagnosis-form.html?id=${diagId}`;
+
+            try {
+                const diag = await api.get(`/diagnoses/${diagId}`);
+                const pat = await api.get(`/patients/${diag.patientId}`).catch(()=>({firstName:'Unknown', lastName:'Patient'}));
+                const doc = await api.get(`/doctors/${diag.assignedDoctorId}`).catch(()=>({fullName:'Unknown Doctor'}));
+
+                document.getElementById('diag-icd').textContent = diag.icdCode;
+                document.getElementById('diag-desc').textContent = diag.description;
+                
+                const sevEl = document.getElementById('diag-severity');
+                sevEl.textContent = diag.severity;
+                if(diag.severity === 'Critical') sevEl.className = 'badge badge-critical';
+                else if(diag.severity === 'High') sevEl.className = 'badge badge-danger';
+                else if(diag.severity === 'Medium') sevEl.className = 'badge badge-warning';
+                else sevEl.className = 'badge badge-success';
+
+                document.getElementById('diag-patient').textContent = `${pat.firstName} ${pat.lastName} (${diag.patientId})`;
+                document.getElementById('diag-doctor').textContent = doc.fullName;
+                document.getElementById('diag-date').textContent = layout.formatDate(diag.diagnosisDate);
+                document.getElementById('diag-updated').textContent = layout.formatDate(diag.lastUpdated);
+                
+                document.getElementById('diag-notes').textContent = diag.clinicalNotes || 'No notes provided.';
+
+                if (diag.followUpRequired) {
+                    document.getElementById('follow-up-section').style.display = 'block';
+                    document.getElementById('diag-followup-date').textContent = layout.formatDate(diag.followUpDate);
+                }
+
+                document.getElementById('back-pat-btn').href = `patient-profile.html?id=${diag.patientId}`;
+
+                document.getElementById('detail-content').style.display = 'block';
+
+            } catch (err) {
+                layout.showToast('Failed to load diagnosis details', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

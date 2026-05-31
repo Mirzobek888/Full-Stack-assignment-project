@@ -1,0 +1,11 @@
+[
+  {
+    "id": "REP-MPAW609N-9EJS",
+    "name": "Diagnosis Report - Javohir Tursunov",
+    "patientId": "PAT-001",
+    "department": "Cardiology",
+    "createdBy": "Mirzobek Tursunov",
+    "date": "2026-05-18",
+    "status": "Generated"
+  }
+]

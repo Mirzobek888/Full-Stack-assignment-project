@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Doctors</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="section-header">
+                    <div>
+                        <h2>Manage Doctors</h2>
+                        <p class="text-muted">Manage doctor profiles, departments, and contact details</p>
+                    </div>
+                    <a href="doctor-form.html" class="btn-primary" id="add-doctor-btn" style="display:none;"><i class="fas fa-plus"></i> Add Doctor</a>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <div class="form-row">
+                        <div class="search-box form-col" style="width:100%;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Search doctors by name, specialty, or department">
+                        </div>
+                        <select class="form-control form-col" id="filter-dept" style="max-width: 200px;">
+                            <option value="">All Departments</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Orthopaedics">Orthopaedics</option>
+                            <option value="General Practice">General Practice</option>
+                        </select>
+                        <select class="form-control form-col" id="filter-status" style="max-width: 200px;">
+                            <option value="">All Statuses</option>
+                            <option value="Available">Available</option>
+                            <option value="Busy">Busy</option>
+                            <option value="Off Duty">Off Duty</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="table-container">
+                        <table class="table" id="doctors-table">
+                            <thead>
+                                <tr>
+                                    <th>Doctor Name</th>
+                                    <th>Specialty</th>
+                                    <th>Department</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/doctors.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (auth.hasRole(['administrator'])) {
+                document.getElementById('add-doctor-btn').style.display = 'inline-flex';
+            }
+        });
+    </script>
+</body>
+</html>

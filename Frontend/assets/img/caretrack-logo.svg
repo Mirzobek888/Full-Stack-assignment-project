@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background Circle with Gradient -->
+  <defs>
+    <linearGradient id="gradientBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#19d3c5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4cc9f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e0e0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main Circle Background -->
+  <circle cx="100" cy="100" r="95" fill="url(#gradientBg)" opacity="0.15" stroke="url(#gradientBg)" stroke-width="2"/>
+  
+  <!-- Medical Cross Icon -->
+  <g id="medical-cross">
+    <!-- Vertical bar of cross -->
+    <rect x="85" y="60" width="30" height="80" rx="15" fill="url(#gradientText)" opacity="0.8"/>
+    <!-- Horizontal bar of cross -->
+    <rect x="60" y="85" width="80" height="30" rx="15" fill="url(#gradientText)" opacity="0.8"/>
+  </g>
+  
+  <!-- Heartbeat line overlay -->
+  <g id="heartbeat" stroke="url(#gradientText)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="30,100 40,100 45,85 50,115 55,95 65,100 100,100"/>
+  </g>
+  
+  <!-- Tech pulse circles -->
+  <circle cx="100" cy="100" r="70" fill="none" stroke="url(#gradientBg)" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="100" cy="100" r="85" fill="none" stroke="url(#gradientBg)" stroke-width="1" opacity="0.2"/>
+  
+  <!-- Accent dots -->
+  <circle cx="155" cy="75" r="4" fill="url(#gradientBg)" opacity="0.6"/>
+  <circle cx="65" cy="155" r="3" fill="url(#gradientBg)" opacity="0.5"/>
+  
+  <!-- Text: "CARE" -->
+  <text x="100" y="155" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="url(#gradientText)" letter-spacing="2">CARE</text>
+</svg>

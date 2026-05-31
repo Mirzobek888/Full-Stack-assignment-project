@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedules - CareTrack</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .day-column {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border-soft);
+        }
+        .day-title {
+            text-align: center;
+            font-weight: 600;
+            color: var(--teal);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(25, 211, 197, 0.2);
+        }
+        .schedule-card {
+            background: var(--bg-panel-strong);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--teal);
+            font-size: 13px;
+        }
+        .schedule-card.busy { border-left-color: var(--warning); }
+        .schedule-card.off { border-left-color: var(--muted); opacity: 0.6; }
+        
+        .sch-doc { font-weight: 600; color: #fff; margin-bottom: 4px; }
+        .sch-time { color: var(--muted); margin-bottom: 4px; display: flex; align-items: center; gap:4px; }
+        .sch-dept { color: var(--teal); font-size: 11px; }
+
+        @media (max-width: 1024px) {
+            .calendar-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">Doctor Schedules</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-name" id="topbar-user-name"></span>
+                            <span class="user-role" id="topbar-user-role"></span>
+                        </div>
+                        <div class="avatar" id="topbar-avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="section-header">
+                    <div>
+                        <h2>Weekly Availability Schedule</h2>
+                        <p class="text-muted">View doctor availability across the week</p>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <div class="form-row">
+                        <select class="form-control form-col" id="filter-dept">
+                            <option value="">All Departments</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Orthopaedics">Orthopaedics</option>
+                            <option value="General Practice">General Practice</option>
+                        </select>
+                        <select class="form-control form-col" id="filter-doc">
+                            <option value="">All Doctors</option>
+                            <!-- JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="calendar-grid" id="calendar-grid">
+                        <div class="day-column" id="day-Monday">
+                            <div class="day-title">Monday</div>
+                            <div class="day-content"></div>
+                        </div>
+                        <div class="day-column" id="day-Tuesday">
+                            <div class="day-title">Tuesday</div>
+                            <div class="day-content"></div>
+                        </div>
+                        <div class="day-column" id="day-Wednesday">
+                            <div class="day-title">Wednesday</div>
+                            <div class="day-content"></div>
+                        </div>
+                        <div class="day-column" id="day-Thursday">
+                            <div class="day-title">Thursday</div>
+                            <div class="day-content"></div>
+                        </div>
+                        <div class="day-column" id="day-Friday">
+                            <div class="day-title">Friday</div>
+                            <div class="day-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/schedules.js"></script>
+</body>
+</html>

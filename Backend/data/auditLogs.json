@@ -1,0 +1,432 @@
+[
+  {
+    "id": "LOG-MP8OU7TR-TU8R",
+    "timestamp": "2026-05-16T18:36:58.527Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MP8OZX99-P8IU",
+    "timestamp": "2026-05-16T18:41:24.765Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Updated",
+    "entity": "User",
+    "details": "Updated user admin",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MP8P1SGB-DXG8",
+    "timestamp": "2026-05-16T18:42:51.851Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAVPQ69-JK5U",
+    "timestamp": "2026-05-18T07:24:58.689Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAW609O-8O63",
+    "timestamp": "2026-05-18T07:37:38.268Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Generated",
+    "entity": "Report",
+    "details": "Generated report for patient PAT-001",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAW85GI-W5PB",
+    "timestamp": "2026-05-18T07:39:18.306Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAW8I46-J57N",
+    "timestamp": "2026-05-18T07:39:34.710Z",
+    "user": "Madina Ismoilova",
+    "role": "receptionist",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAW9LTM-QA4F",
+    "timestamp": "2026-05-18T07:40:26.170Z",
+    "user": "Madina Ismoilova",
+    "role": "receptionist",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAW9SZ5-M3A7",
+    "timestamp": "2026-05-18T07:40:35.441Z",
+    "user": "Diyorbek Rasulov",
+    "role": "clinician",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAWAF5K-E9OI",
+    "timestamp": "2026-05-18T07:41:04.184Z",
+    "user": "Diyorbek Rasulov",
+    "role": "clinician",
+    "action": "Permission Redirect",
+    "entity": "System",
+    "details": "Attempted to access forbidden route: /api/users",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAWAXO9-RM2K",
+    "timestamp": "2026-05-18T07:41:28.185Z",
+    "user": "Diyorbek Rasulov",
+    "role": "clinician",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAWB5ND-7MXU",
+    "timestamp": "2026-05-18T07:41:38.521Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPAWK3DL-LUTA",
+    "timestamp": "2026-05-18T07:48:35.481Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPB3IGG2-X226",
+    "timestamp": "2026-05-18T11:03:16.418Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPB44F0N-42VZ",
+    "timestamp": "2026-05-18T11:20:20.999Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPB44QHV-K3UC",
+    "timestamp": "2026-05-18T11:20:35.875Z",
+    "user": "Madina Ismoilova",
+    "role": "receptionist",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPB480QY-VB7O",
+    "timestamp": "2026-05-18T11:23:09.130Z",
+    "user": "Madina Ismoilova",
+    "role": "receptionist",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPB48JUQ-9HV3",
+    "timestamp": "2026-05-18T11:23:33.890Z",
+    "user": "Diyorbek Rasulov",
+    "role": "clinician",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPB4CA6G-0YI0",
+    "timestamp": "2026-05-18T11:26:27.976Z",
+    "user": "Diyorbek Rasulov",
+    "role": "clinician",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPB4OY97-W983",
+    "timestamp": "2026-05-18T11:36:19.051Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPBFM1BL-A10W",
+    "timestamp": "2026-05-18T16:41:58.833Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCKVU12-SAJR",
+    "timestamp": "2026-05-19T11:57:20.198Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCKXK3O-GIO2",
+    "timestamp": "2026-05-19T11:58:40.644Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Updated",
+    "entity": "User",
+    "details": "Updated user admin",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCKYNX6-ZSSO",
+    "timestamp": "2026-05-19T11:59:32.250Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Updated",
+    "entity": "Patient",
+    "details": "Updated patient Malika Sobirova",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCL3YWP-4R9W",
+    "timestamp": "2026-05-19T12:03:39.769Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCL4BRC-58V2",
+    "timestamp": "2026-05-19T12:03:56.424Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Updated",
+    "entity": "User",
+    "details": "Updated user admin",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCLS6D9-T19J",
+    "timestamp": "2026-05-19T12:22:29.181Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCNLBRF-Y0T8",
+    "timestamp": "2026-05-19T13:13:08.811Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCNLIZI-YD9C",
+    "timestamp": "2026-05-19T13:13:18.174Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Updated",
+    "entity": "User",
+    "details": "Updated user admin",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCNLL4U-G98Q",
+    "timestamp": "2026-05-19T13:13:20.958Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCNMFZZ-ZPKT",
+    "timestamp": "2026-05-19T13:14:00.959Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCNMPHK-L3H7",
+    "timestamp": "2026-05-19T13:14:13.256Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Updated",
+    "entity": "User",
+    "details": "Updated user admin",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCNMZNC-X7NI",
+    "timestamp": "2026-05-19T13:14:26.424Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Logout",
+    "entity": "System",
+    "details": "User logged out",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPCRWPPR-QXKE",
+    "timestamp": "2026-05-19T15:13:58.575Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPFJ2J0I-MMFZ",
+    "timestamp": "2026-05-21T13:29:51.810Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGPZPJV-9NLS",
+    "timestamp": "2026-05-22T09:31:23.803Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGRJB1R-CIDU",
+    "timestamp": "2026-05-22T10:14:37.743Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGRXZUS-HU62",
+    "timestamp": "2026-05-22T10:26:03.076Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGRY9U3-KVH1",
+    "timestamp": "2026-05-22T10:26:16.011Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGS11GL-RN2A",
+    "timestamp": "2026-05-22T10:28:25.125Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGS3BF1-CPLR",
+    "timestamp": "2026-05-22T10:30:11.341Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGS7M2G-2DDP",
+    "timestamp": "2026-05-22T10:33:31.768Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Login",
+    "entity": "System",
+    "details": "User logged in",
+    "ipDevice": "::1"
+  },
+  {
+    "id": "LOG-MPGSK7IB-1N0Z",
+    "timestamp": "2026-05-22T10:43:19.427Z",
+    "user": "Mirzobek Tursunov",
+    "role": "administrator",
+    "action": "Created",
+    "entity": "Diagnosis",
+    "details": "Added diagnosis I.120 for patient PAT-001",
+    "ipDevice": "::1"
+  }
+]

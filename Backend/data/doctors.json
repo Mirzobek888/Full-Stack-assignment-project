@@ -1,0 +1,80 @@
+[
+  {
+    "id": "DOC-001",
+    "fullName": "Diyorbek Rasulov",
+    "specialty": "Cardiologist",
+    "department": "Cardiology",
+    "email": "d.rasulov@caretrack.uz",
+    "phone": "+998 90 123 45 67",
+    "officeRoom": "A-204",
+    "availableDays": ["Monday", "Wednesday", "Friday"],
+    "startTime": "09:00",
+    "endTime": "17:00",
+    "status": "Available"
+  },
+  {
+    "id": "DOC-002",
+    "fullName": "Sevara Akramova",
+    "specialty": "Neurologist",
+    "department": "Neurology",
+    "email": "s.akramova@caretrack.uz",
+    "phone": "+998 91 234 56 78",
+    "officeRoom": "B-102",
+    "availableDays": ["Tuesday", "Thursday"],
+    "startTime": "10:00",
+    "endTime": "16:00",
+    "status": "Available"
+  },
+  {
+    "id": "DOC-003",
+    "fullName": "Jasurbek Olimov",
+    "specialty": "Dermatologist",
+    "department": "Dermatology",
+    "email": "j.olimov@caretrack.uz",
+    "phone": "+998 93 345 67 89",
+    "officeRoom": "C-305",
+    "availableDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "startTime": "08:00",
+    "endTime": "14:00",
+    "status": "Busy"
+  },
+  {
+    "id": "DOC-004",
+    "fullName": "Nilufar Abdullayeva",
+    "specialty": "Orthopaedic Specialist",
+    "department": "Orthopaedics",
+    "email": "n.abdullayeva@caretrack.uz",
+    "phone": "+998 94 456 78 90",
+    "officeRoom": "D-401",
+    "availableDays": ["Monday", "Thursday"],
+    "startTime": "09:00",
+    "endTime": "18:00",
+    "status": "Available"
+  },
+  {
+    "id": "DOC-005",
+    "fullName": "Komiljon Ergashev",
+    "specialty": "General Practitioner",
+    "department": "General Practice",
+    "email": "k.ergashev@caretrack.uz",
+    "phone": "+998 97 567 89 01",
+    "officeRoom": "A-101",
+    "availableDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "startTime": "08:00",
+    "endTime": "20:00",
+    "status": "Available"
+  },
+  {
+    "id": "DOC-006",
+    "fullName": "Ziyoda Matkarimova",
+    "specialty": "Radiologist",
+    "department": "Diagnostics",
+    "email": "z.matkarimova@caretrack.uz",
+    "phone": "+998 99 678 90 12",
+    "officeRoom": "R-001",
+    "availableDays": ["Wednesday", "Friday"],
+    "startTime": "14:00",
+    "endTime": "20:00",
+    "status": "Off Duty"
+  }
+]
