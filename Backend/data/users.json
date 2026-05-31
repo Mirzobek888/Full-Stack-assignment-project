@@ -2,7 +2,7 @@
   {
     "id": "USR-001",
     "username": "admin",
-    "password": "admin123",
+    "password": "scrypt$1082b91f46fd0b2d40fb4af7ba452ca6$08c747f4a91f3893e3e1a72b3f15291d089192531e8f166cc2ceb7b688b073fa6df89a43eaba697d109fdbb80070f72f17eccf5f907bc0a55eeef03be1b1221d",
     "name": "Mirzobek Tursunov",
     "role": "administrator",
     "department": "Administration",
@@ -11,7 +11,7 @@
   {
     "id": "USR-002",
     "username": "doctor",
-    "password": "doctor123",
+    "password": "scrypt$e39d9d50afd0f06161dc37f774780448$968d4c5cc3b9476bb4a745832354d442df51f147a60a09179e756b4df402a336ff14ef34c4a688e142fc5d1505bf11be6599653fc0dd2aca4f83fa6712303884",
     "name": "Diyorbek Rasulov",
     "role": "clinician",
     "department": "Cardiology",
@@ -20,7 +20,7 @@
   {
     "id": "USR-003",
     "username": "reception",
-    "password": "reception123",
+    "password": "scrypt$131a89092a3ef9a4d856b1315688dc4b$90d82cbdb544337271173a5b97a8624a47b73fdd609c88bfce9561bf97158528a824e0284f51acd876e4b1a6adc1cf52834a9f6d50816bece1abfbdd389ef181",
     "name": "Madina Ismoilova",
     "role": "receptionist",
     "department": "Reception",

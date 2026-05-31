@@ -8,6 +8,7 @@
 const { readData } = require('../utils/fileDb');
 const { createSession, destroySession } = require('../utils/sessionManager');
 const { logAction } = require('../utils/auditLogger');
+const { verifyPassword } = require('../utils/password');
 
 // -------------------------------------------------------
 // LOGIN: POST /api/auth/login
@@ -27,13 +28,13 @@ function login(req, res) {
     // Step 3: Load all users from the JSON file
     const users = readData('users.json');
 
-    // Step 4: Find a user who matches the username, password, AND is Active
+    // Step 4: Find an Active user with this username, then verify the password hash
     const matchedUser = users.find(
-        u => u.username === username && u.password === password && u.status === 'Active'
+        u => u.username === username && u.status === 'Active'
     );
 
-    // Step 5: If no matching user was found, return an error
-    if (!matchedUser) {
+    // Step 5: Reject if no such user or the password does not match the stored hash
+    if (!matchedUser || !verifyPassword(password, matchedUser.password)) {
         return res.status(401).json({ error: 'Invalid credentials or account is inactive.' });
     }
 

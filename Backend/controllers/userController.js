@@ -11,6 +11,7 @@
 const { readData, findById, createRecord, updateRecord, deleteRecord } = require('../utils/fileDb');
 const { generateId } = require('../utils/idGenerator');
 const { logAction } = require('../utils/auditLogger');
+const { hashPassword } = require('../utils/password');
 
 // -------------------------------------------------------
 // GET ALL USERS: GET /api/users
@@ -34,7 +35,8 @@ function createUser(req, res) {
     // Step 1: Build the new user object
     const newUser = {
         id: generateId('USR'), // e.g. "USR-MP8OU7TR-TU8R"
-        ...req.body            // name, username, password, role, department, status
+        ...req.body,           // name, username, password, role, department, status
+        password: req.body.password ? hashPassword(req.body.password) : undefined // store only the salted hash
     };
 
     // Step 2: Check if the username is already taken
@@ -78,10 +80,12 @@ function updateUser(req, res) {
     // Step 2: Prepare the updated data
     const updatedData = { ...req.body };
 
-    // Step 3: If no new password was provided, keep the existing one
-    // This prevents accidentally clearing someone's password
+    // Step 3: If no new password was provided, keep the existing one.
+    // If a new password WAS provided, store it as a salted hash.
     if (!updatedData.password) {
         updatedData.password = existingUser.password;
+    } else {
+        updatedData.password = hashPassword(updatedData.password);
     }
 
     // Step 4: Save the updated user
