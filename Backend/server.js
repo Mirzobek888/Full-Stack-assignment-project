@@ -15,7 +15,9 @@ const path = require('path');       // path helps us build correct folder paths 
 
 // Step 2: Create the Express application
 const app = express();
-
+const cors = require('cors'); // CORS allows our frontend (running on a different port) to talk to our backend
+app.use(cors()); // Enable CORS for all routes (you can configure this more tightly in production)
+app.use(express.json());
 // Step 3: Set the port number
 // process.env.PORT allows hosting services (like Heroku) to set the port automatically
 // If not set, we default to port 3000
