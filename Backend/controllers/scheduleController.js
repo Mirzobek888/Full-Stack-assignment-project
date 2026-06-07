@@ -82,4 +82,18 @@ function deleteSchedule(req, res) {
     res.json({ message: 'Schedule deleted successfully.' });
 }
 
-module.exports = { getSchedules, createSchedule, updateSchedule, deleteSchedule };
+// -------------------------------------------------------
+// GET SCHEDULE BY ID: GET /api/schedules/:id
+// Returns a specific schedule by its ID
+// -------------------------------------------------------
+function getScheduleById(req, res) {
+    const schedule = findById('schedules.json', req.params.id);
+
+    if (!schedule) {
+        return res.status(404).json({ error: 'Schedule not found.' });
+    }
+
+    res.json(schedule);
+}
+
+module.exports = { getSchedules, getScheduleById, createSchedule, updateSchedule, deleteSchedule };

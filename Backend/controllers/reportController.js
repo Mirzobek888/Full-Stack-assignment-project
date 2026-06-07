@@ -1,64 +1,109 @@
-// ============================================================
 // reportController.js - Handles Patient Report generation
-// ============================================================
+// ==========================================
 // Reports are summaries generated for a specific patient.
 // These functions run when hitting the /api/reports routes.
-// ============================================================
 
-const { readData, createRecord } = require('../utils/fileDb');
+const { readData, writeData } = require('../utils/fileDb');
 const { generateId } = require('../utils/idGenerator');
-const { logAction } = require('../utils/auditLogger');
 
-// -------------------------------------------------------
 // GET ALL REPORTS: GET /api/reports
 // Returns all previously generated reports from reports.json
-// -------------------------------------------------------
 function getReports(req, res) {
     const reports = readData('reports.json');
     res.json(reports);
 }
 
-// -------------------------------------------------------
 // GENERATE PATIENT REPORT: POST /api/reports/patient/:patientId
 // Creates a new report record for a specific patient
-// -------------------------------------------------------
 function generatePatientReport(req, res) {
-    // Step 1: Get the patient ID from the URL (e.g. /api/reports/patient/PAT-001)
     const { patientId } = req.params;
+    const { type, notes } = req.body;
 
-    // Step 2: Look up the patient in patients.json to get their name
+    // Validate required fields
+    if (!type) {
+        return res.status(400).json({ error: 'Report type is required' });
+    }
+
+    // Validate report type enum
+    const validTypes = ['Medical', 'Surgical', 'Lab', 'Diagnostic', 'Summary'];
+    if (!validTypes.includes(type)) {
+        return res.status(400).json({ error: `Invalid report type. Must be one of: ${validTypes.join(', ')}` });
+    }
+
+    // Check if patient exists
     const patients = readData('patients.json');
     const patient = patients.find(p => p.id === patientId);
-
-    // Step 3: If patient doesn't exist, return an error
     if (!patient) {
-        return res.status(404).json({ error: 'Patient not found. Cannot generate report.' });
+        return res.status(404).json({ error: 'Patient not found' });
     }
 
-    // Step 4: Build the new report record
+    const reports = readData('reports.json');
     const newReport = {
-        id: generateId('REP'),                             // Unique ID like "REP-MP8OU7TR-TU8R"
-        name: `Diagnosis Report - ${patient.firstName} ${patient.lastName}`,
-        patientId: patientId,                              // Which patient this report is for
-        department: patient.department,                    // Their department
-        createdBy: req.user.name,                          // Who generated it
-        date: new Date().toISOString().split('T')[0],      // Today's date
-        status: 'Generated'
+        id: generateId('REP'),
+        patientId,
+        type,
+        notes: notes || '',
+        createdAt: new Date().toISOString(),
+        createdBy: req.user?.id || 'system'
     };
 
-    // Step 5: Save the new report to reports.json
-    const savedReport = createRecord('reports.json', newReport);
+    reports.push(newReport);
+    writeData('reports.json', reports);
 
-    if (!savedReport) {
-        return res.status(500).json({ error: 'Failed to generate report. Please try again.' });
-    }
+    // Audit log
+    const auditLogger = require('../utils/auditLogger');
+    auditLogger.logAction(
+        req.user?.name || 'Unknown',
+        req.user?.role || 'Unknown',
+        'Created',
+        'Report',
+        `Report ${newReport.id} generated for patient ${patientId}`,
+        req.ip
+    );
 
-    // Step 6: Log this action in the audit trail
-    logAction(req.user.name, req.user.role, 'Generated', 'Report',
-        `Generated report for patient ${patientId}`, req.ip);
-
-    // Step 7: Return the new report with 201 Created
-    res.status(201).json(savedReport);
+    res.status(201).json(newReport);
 }
 
-module.exports = { getReports, generatePatientReport };
+// GET PATIENT REPORTS: GET /api/reports/patient/:patientId
+// Returns all reports for a specific patient
+function getPatientReports(req, res) {
+    const { patientId } = req.params;
+    const reports = readData('reports.json');
+    const patientReports = reports.filter(r => r.patientId === patientId);
+    res.json(patientReports);
+}
+
+// DELETE REPORT: DELETE /api/reports/:reportId
+// Deletes a specific report
+function deleteReport(req, res) {
+    const { reportId } = req.params;
+    const reports = readData('reports.json');
+    const reportIndex = reports.findIndex(r => r.id === reportId);
+
+    if (reportIndex === -1) {
+        return res.status(404).json({ error: 'Report not found' });
+    }
+
+    const deletedReport = reports.splice(reportIndex, 1)[0];
+    writeData('reports.json', reports);
+
+    // Audit log
+    const auditLogger = require('../utils/auditLogger');
+    auditLogger.logAction(
+        req.user?.name || 'Unknown',
+        req.user?.role || 'Unknown',
+        'Deleted',
+        'Report',
+        `Report ${reportId} deleted`,
+        req.ip
+    );
+
+    res.json({ message: 'Report deleted successfully' });
+}
+
+module.exports = {
+    getReports,
+    generatePatientReport,
+    getPatientReports,
+    deleteReport
+};

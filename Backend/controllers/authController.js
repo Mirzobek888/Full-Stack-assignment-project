@@ -85,25 +85,5 @@ function logout(req, res) {
     res.json({ message: 'Logged out successfully.' });
 }
 
-// -------------------------------------------------------
-// DEMO USERS: GET /api/auth/demo-users
-// Returns current credentials for the demo roles shown on login.
-// -------------------------------------------------------
-function getDemoUsers(req, res) {
-    const users = readData('users.json');
-    const demoRoles = ['administrator', 'clinician', 'receptionist'];
-
-    const demoUsers = demoRoles.map(role => {
-        const user = users.find(u => u.role === role && u.status === 'Active');
-        return {
-            role,
-            username: user ? user.username : 'N/A',
-            password: user ? user.password : 'N/A'
-        };
-    });
-
-    res.json(demoUsers);
-}
-
 // Export the three functions
 module.exports = { login, getMe, logout };

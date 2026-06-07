@@ -3,10 +3,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     layout.init();
 
     const user = auth.getCurrentUser();
-    document.getElementById('welcome-name').textContent = user.name.split(' ')[0];
+    if (user && user.name) {
+        document.getElementById('welcome-name').textContent = user.name.split(' ')[0];
+    }
 
-    renderQuickActions(user.role);
-    await loadDashboardData(user.role);
+    if (user && user.role) {
+        renderQuickActions(user.role);
+        await loadDashboardData(user.role);
+    }
 });
 
 function renderQuickActions(role) {

@@ -1,11 +1,29 @@
 [
   {
-    "id": "REP-MPAW609N-9EJS",
+    "id": "REP-MPURHGDT-C5KK",
     "name": "Diagnosis Report - Javohir Tursunov",
     "patientId": "PAT-001",
     "department": "Cardiology",
     "createdBy": "Mirzobek Tursunov",
-    "date": "2026-05-18",
+    "createdAt": "2026-06-01T08:30:00.000Z",
+    "status": "Generated"
+  },
+  {
+    "id": "REP-MPURJDOX-F5G9",
+    "name": "Diagnosis Report - Javohir Tursunov",
+    "patientId": "PAT-001",
+    "department": "Cardiology",
+    "createdBy": "Mirzobek Tursunov",
+    "createdAt": "2026-06-01T10:15:00.000Z",
+    "status": "Generated"
+  },
+  {
+    "id": "REP-MPUSVZYT-YY2A",
+    "name": "Diagnosis Report - Javohir Tursunov",
+    "patientId": "PAT-001",
+    "department": "Cardiology",
+    "createdBy": "Diyorbek Rasulov",
+    "createdAt": "2026-06-01T14:45:00.000Z",
     "status": "Generated"
   }
 ]

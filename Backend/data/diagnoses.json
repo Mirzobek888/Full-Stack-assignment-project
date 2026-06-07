@@ -193,5 +193,20 @@
     "followUpDate": "",
     "createdBy": "Mirzobek Tursunov",
     "lastUpdated": "2026-05-22"
+  },
+  {
+    "id": "DIA-MQ3FLGX6-M0H5",
+    "patientId": "PAT-MQ3FIF5Q-VQ6U",
+    "assignedDoctorId": "DOC-004",
+    "icdCode": "I88",
+    "description": "Acne problem",
+    "category": "Dermatology",
+    "severity": "Low",
+    "diagnosisDate": "2026-06-07",
+    "clinicalNotes": "Acne problem on his face",
+    "followUpRequired": false,
+    "followUpDate": "",
+    "createdBy": "Diyorbek Rasulov",
+    "lastUpdated": "2026-06-07"
   }
 ]

@@ -6,79 +6,71 @@
     <title>Reports - CareTrack</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/tables.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div id="app">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-logo">
                 <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
             </div>
-            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- Injected via layout.js -->
+            </nav>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
+            <!-- Topbar -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+                        <i class="fas fa-bars"></i>
+                    </button>
                     <h1 class="page-title">Reports</h1>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search reports...">
+                    </div>
                 </div>
                 <div class="topbar-right">
+                    <button class="btn-icon"><i class="fas fa-bell"></i></button>
                     <div class="user-profile">
                         <div class="user-info">
-                            <span class="user-name" id="topbar-user-name"></span>
-                            <span class="user-role" id="topbar-user-role"></span>
+                            <span class="user-name" id="topbar-user-name">User</span>
+                            <span class="user-role" id="topbar-user-role">Role</span>
                         </div>
-                        <div class="avatar" id="topbar-avatar"></div>
+                        <div class="avatar" id="topbar-avatar">U</div>
                     </div>
                 </div>
             </header>
 
             <div class="page-container">
-                <div class="section-header">
+                <div class="page-header">
                     <div>
-                        <h2>Clinical Reports</h2>
-                        <p class="text-muted">Generate and review patient diagnosis reports</p>
+                        <h2>Patient Reports</h2>
+                        <p class="text-muted">Manage and view generated patient reports</p>
                     </div>
                 </div>
 
-                <div class="dashboard-grid" style="gap:16px;">
-                    <div class="glass-card" style="text-align:center;">
-                        <i class="fas fa-file-medical-alt" style="font-size:36px; color:var(--teal); margin-bottom:16px;"></i>
-                        <h3 style="margin-bottom:8px;">Patient Diagnosis Report</h3>
-                        <p class="text-muted" style="margin-bottom:16px;">Detailed diagnosis history for a specific patient.</p>
-                        <a href="patients.html" class="btn-primary" style="display:inline-block;">Select Patient</a>
-                    </div>
-                    <div class="glass-card" style="text-align:center; opacity: 0.6; pointer-events: none;">
-                        <i class="fas fa-user-md" style="font-size:36px; color:var(--teal); margin-bottom:16px;"></i>
-                        <h3 style="margin-bottom:8px;">Doctor Summary</h3>
-                        <p class="text-muted" style="margin-bottom:16px;">Overview of assigned patients and workload.</p>
-                        <button class="btn-secondary">Coming Soon</button>
-                    </div>
-                    <div class="glass-card" style="text-align:center; opacity: 0.6; pointer-events: none;">
-                        <i class="fas fa-hospital" style="font-size:36px; color:var(--teal); margin-bottom:16px;"></i>
-                        <h3 style="margin-bottom:8px;">Department Overview</h3>
-                        <p class="text-muted" style="margin-bottom:16px;">Aggregated diagnosis stats by department.</p>
-                        <button class="btn-secondary">Coming Soon</button>
-                    </div>
-                </div>
-
-                <div class="glass-card" style="margin-top: 32px;">
-                    <h3 style="margin-bottom: 20px;">Recently Generated Reports</h3>
+                <!-- Reports Table -->
+                <div class="glass-card">
                     <div class="table-container">
                         <table class="table" id="reports-table">
                             <thead>
                                 <tr>
-                                    <th>Report Name</th>
-                                    <th>Patient / Scope</th>
-                                    <th>Generated By</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>Report ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Type</th>
+                                    <th>Date & Time</th>
+                                    <th>Created By</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- JS -->
+                                <!-- Populated via JavaScript -->
                             </tbody>
                         </table>
                     </div>

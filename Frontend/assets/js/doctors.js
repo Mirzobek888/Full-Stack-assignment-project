@@ -57,7 +57,7 @@ function renderDoctors() {
             </td>
             <td>
                 <div class="table-actions">
-                    <a href="doctor-detail.html?id=${doc.id}" class="btn-icon" title="View"><i class="fas fa-eye"></i></a>
+                    <a href="doctor-detail.html?id=${doc.id}" class="btn-secondary" style="padding: 6px 14px; font-size: 12px;">View</a>
                     ${isAdmin ? `
                     <a href="doctor-form.html?id=${doc.id}" class="btn-icon" title="Edit"><i class="fas fa-edit"></i></a>
                     <button class="btn-icon" style="color:var(--danger);" onclick="deleteDoctor('${doc.id}')" title="Delete"><i class="fas fa-trash"></i></button>

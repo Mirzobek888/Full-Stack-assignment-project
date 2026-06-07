@@ -168,5 +168,22 @@
     "status": "Stable",
     "registrationNotes": "Fever and mild cough.",
     "createdAt": "2026-05-15"
+  },
+  {
+    "id": "PAT-MQ3FIF5Q-VQ6U",
+    "firstName": "Mirzobek",
+    "lastName": "Tursunov",
+    "dateOfBirth": "2008-05-09",
+    "gender": "Male",
+    "phone": "99 098 47 66",
+    "email": "mirzobektursunov00@gmail.com",
+    "address": "Uzbekistan, Tashkent city, Sergeli district, Yangi seergeli street",
+    "emergencyContactName": "Mirzobek Tursunov",
+    "emergencyContactPhone": "990984766",
+    "department": "Dermatology",
+    "assignedDoctorId": "DOC-004",
+    "status": "Stable",
+    "registrationNotes": "Acne problem on his face",
+    "createdAt": "2026-06-07"
   }
 ]

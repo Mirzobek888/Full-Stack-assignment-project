@@ -1,45 +1,48 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    auth.requireRole(['administrator', 'clinician']);
+document.addEventListener('DOMContentLoaded', () => {
+    auth.requireAuth();
     layout.init();
-
-    await loadReports();
+    loadReports();
 });
 
 async function loadReports() {
     try {
         const reports = await api.get('/reports');
-        const patients = await api.get('/patients').catch(()=>[]);
-        const users = await api.get('/users').catch(()=>[]); // Only admin can get users normally, but let's see. If not, just use createdBy string.
-
+        const patients = await api.get('/patients');
+        
         const tbody = document.querySelector('#reports-table tbody');
         if (!tbody) return;
 
+        tbody.innerHTML = '';
+        
         // Sort by date descending
-        reports.sort((a,b) => new Date(b.date) - new Date(a.date));
+        reports.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+        // Populate table
         tbody.innerHTML = reports.map(rep => {
-            const pat = patients.find(p => p.id === rep.patientId);
-            const patName = pat ? `${pat.firstName} ${pat.lastName}` : rep.patientId;
-
+            const patient = patients.find(p => p.id === rep.patientId);
+            const patientName = patient ? `${patient.firstName} ${patient.lastName}` : 'Unknown Patient';
+            const date = layout.formatDateTime(rep.createdAt);
+            const type = rep.type || 'General';
+            
             return `
-            <tr>
-                <td style="font-weight:600; color:var(--teal);">${rep.name}</td>
-                <td>${patName}</td>
-                <td>${rep.createdBy}</td>
-                <td>${layout.formatDate(rep.date)}</td>
-                <td><span class="badge badge-success">${rep.status}</span></td>
-                <td>
-                    <a href="patient-report.html?id=${rep.patientId}" class="btn-secondary" style="padding:4px 12px; font-size:12px;">View</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>${rep.id}</td>
+                    <td>${patientName}</td>
+                    <td><span class="badge-neutral">${type}</span></td>
+                    <td>${date}</td>
+                    <td>${rep.createdBy || 'System'}</td>
+                    <td>
+                        <a href="patient-report.html?id=${rep.patientId}" class="btn-secondary" style="padding:6px 14px; font-size:12px;">View</a>
+                    </td>
+                </tr>
             `;
         }).join('');
 
         if(reports.length === 0) {
             tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 32px; color:var(--muted);">No reports generated yet</td></tr>`;
         }
-
-    } catch (err) {
+    } catch (error) {
+        console.error('Error loading reports:', error);
         layout.showToast('Failed to load reports', 'error');
     }
 }

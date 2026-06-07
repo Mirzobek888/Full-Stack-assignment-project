@@ -72,7 +72,7 @@ function renderPatients() {
             </td>
             <td>
                 <div class="table-actions">
-                    <a href="patient-profile.html?id=${pat.id}" class="btn-icon" title="View Profile"><i class="fas fa-eye"></i></a>
+                    <a href="patient-profile.html?id=${pat.id}" class="btn-secondary" style="padding: 6px 14px; font-size: 12px;">View</a>
                     ${canEdit ? `
                     <a href="patient-form.html?id=${pat.id}" class="btn-icon" title="Edit"><i class="fas fa-edit"></i></a>
                     ` : ''}

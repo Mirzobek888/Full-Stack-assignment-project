@@ -50,124 +50,83 @@
         }
         .report-table th, .report-table td {
             border: 1px solid #ddd;
-            padding: 12px;
+            padding: 10px;
             text-align: left;
-            font-size: 13px;
             color: #000;
         }
-        .report-table th { background: #f0f0f0; font-weight: 600; }
+        .report-table th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
         
-        .report-footer {
-            margin-top: 60px;
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #ddd;
-            padding-top: 20px;
+        .print-button {
+            text-align: center;
+            margin: 30px 0;
         }
-        .signature-line {
-            width: 200px;
-            border-bottom: 1px solid #000;
-            margin-bottom: 8px;
+        .print-button button {
+            background: #07111f;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
         }
-        .actions-bar {
-            margin-bottom: 24px;
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
+        .print-button button:hover {
+            background: #19d3c5;
+            color: #000;
         }
-        .text-dark { color: #000 !important; }
+
+        @media print {
+            body { background: white; }
+            .print-button { display: none; }
+            .topbar, .sidebar, .mobile-menu-btn { display: none !important; }
+            #app { display: block; }
+            .main-content { margin-left: 0; }
+            .report-page { box-shadow: none; }
+        }
     </style>
 </head>
 <body>
     <div id="app">
-        <aside class="sidebar no-print">
+        <!-- Sidebar -->
+        <aside class="sidebar">
             <div class="sidebar-logo">
                 <img src="assets/img/caretrack-logo.svg" alt="CareTrack">
             </div>
-            <nav class="sidebar-nav" id="sidebar-nav"></nav>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- Injected via layout.js -->
+            </nav>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <header class="topbar no-print">
+            <!-- Topbar -->
+            <header class="topbar">
                 <div class="topbar-left">
-                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fas fa-bars"></i></button>
-                    <h1 class="page-title">Report Viewer</h1>
+                    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Patient Report</h1>
                 </div>
                 <div class="topbar-right">
+                    <button class="btn-icon"><i class="fas fa-bell"></i></button>
                     <div class="user-profile">
                         <div class="user-info">
-                            <span class="user-name" id="topbar-user-name"></span>
-                            <span class="user-role" id="topbar-user-role"></span>
+                            <span class="user-name" id="topbar-user-name">User</span>
+                            <span class="user-role" id="topbar-user-role">Role</span>
                         </div>
-                        <div class="avatar" id="topbar-avatar"></div>
+                        <div class="avatar" id="topbar-avatar">U</div>
                     </div>
                 </div>
             </header>
 
             <div class="page-container">
-                <div class="actions-bar no-print">
-                    <a href="reports.html" class="btn-secondary">Back</a>
-                    <button onclick="window.print()" class="btn-primary"><i class="fas fa-print"></i> Print / Save PDF</button>
-                </div>
-
-                <div class="report-page print-area" id="report-content">
-                    <div class="report-header">
-                        <div class="clinic-info">
-                            <h2 id="r-clinic-name">CareTrack Clinic</h2>
-                            <p id="r-clinic-contact">contact@caretrack.uz | +998 71 123 45 67</p>
-                            <p>Tashkent, Uzbekistan</p>
-                        </div>
-                        <div class="report-title">
-                            <h1>Patient Diagnosis Report</h1>
-                            <p>Date Generated: <span id="r-date"></span></p>
-                            <p>Report ID: <span id="r-id"></span></p>
-                        </div>
+                <div class="report-page" id="report-content">
+                    <div class="print-button">
+                        <button onclick="window.print()"><i class="fas fa-print"></i> Print Report</button>
                     </div>
-
-                    <div class="patient-section text-dark">
-                        <div class="patient-info">
-                            <h3 style="color:#000; margin-top:0;">Patient Details</h3>
-                            <p><strong>Name:</strong> <span id="r-pat-name"></span></p>
-                            <p><strong>Patient ID:</strong> <span id="r-pat-id"></span></p>
-                            <p><strong>DOB / Age:</strong> <span id="r-pat-dob"></span></p>
-                            <p><strong>Gender:</strong> <span id="r-pat-gender"></span></p>
-                        </div>
-                        <div class="patient-info">
-                            <h3 style="color:#000; margin-top:0;">Clinical Details</h3>
-                            <p><strong>Primary Doctor:</strong> <span id="r-doc-name"></span></p>
-                            <p><strong>Department:</strong> <span id="r-dept"></span></p>
-                            <p><strong>Status:</strong> <span id="r-status"></span></p>
-                        </div>
-                    </div>
-
-                    <h3 class="text-dark" style="margin-bottom: 16px;">Diagnosis History</h3>
-                    <table class="report-table" id="r-diag-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>ICD Code</th>
-                                <th>Description</th>
-                                <th>Severity</th>
-                                <th>Clinical Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- JS -->
-                        </tbody>
-                    </table>
-
-                    <div class="report-footer text-dark">
-                        <div>
-                            <p style="margin-bottom: 40px;">Generated By:</p>
-                            <div class="signature-line"></div>
-                            <p id="r-generated-by"></p>
-                        </div>
-                        <div style="text-align: right;">
-                            <p style="margin-bottom: 40px;">Clinician Signature:</p>
-                            <div class="signature-line"></div>
-                            <p id="r-doc-signature"></p>
-                        </div>
-                    </div>
+                    <!-- Report content loaded via JavaScript -->
                 </div>
             </div>
         </main>
@@ -178,64 +137,88 @@
     <script src="assets/js/layout.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            auth.requireRole(['administrator', 'clinician']);
+            auth.requireAuth();
             layout.init();
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const patId = urlParams.get('id');
-
-            if (!patId) {
-                window.location.href = 'reports.html';
+            
+            const params = new URLSearchParams(window.location.search);
+            const patientId = params.get('id');
+            
+            if (!patientId) {
+                document.getElementById('report-content').innerHTML = '<p>Patient ID not provided</p>';
                 return;
             }
 
             try {
-                const settings = await api.get('/settings').catch(()=>({clinicName:'CareTrack Clinic', clinicEmail:'contact@caretrack.uz', emergencyNumber:'+998 71 123 45 67'}));
-                document.getElementById('r-clinic-name').textContent = settings.clinicName || 'CareTrack Clinic';
-                document.getElementById('r-clinic-contact').textContent = `${settings.clinicEmail || ''} | ${settings.emergencyNumber || ''}`;
-
-                const pat = await api.get(`/patients/${patId}`);
-                let doc = { fullName: 'Not Assigned' };
-                if (pat.assignedDoctorId) {
-                    doc = await api.get(`/doctors/${pat.assignedDoctorId}`).catch(()=>({fullName: 'Unknown'}));
-                }
-
-                document.getElementById('r-date').textContent = new Date().toLocaleDateString();
-                document.getElementById('r-id').textContent = `REP-${Date.now().toString(36).toUpperCase()}`;
-
-                document.getElementById('r-pat-name').textContent = `${pat.firstName} ${pat.lastName}`;
-                document.getElementById('r-pat-id').textContent = pat.id;
-                document.getElementById('r-pat-dob').textContent = `${pat.dateOfBirth} (${layout.calculateAge(pat.dateOfBirth)} yrs)`;
-                document.getElementById('r-pat-gender').textContent = pat.gender;
+                const patients = await api.get('/patients');
+                const patient = patients.find(p => p.id === patientId);
                 
-                document.getElementById('r-doc-name').textContent = doc.fullName;
-                document.getElementById('r-dept').textContent = pat.department;
-                document.getElementById('r-status').textContent = pat.status;
-
-                const user = auth.getCurrentUser();
-                document.getElementById('r-generated-by').textContent = user.name;
-                document.getElementById('r-doc-signature').textContent = doc.fullName;
-
-                const diags = await api.get('/diagnoses');
-                const patDiags = diags.filter(d => d.patientId === patId).sort((a,b) => new Date(b.diagnosisDate) - new Date(a.diagnosisDate));
-
-                const tbody = document.querySelector('#r-diag-table tbody');
-                tbody.innerHTML = patDiags.map(d => `
-                    <tr>
-                        <td style="white-space:nowrap;">${layout.formatDate(d.diagnosisDate)}</td>
-                        <td><strong>${d.icdCode}</strong></td>
-                        <td>${d.description}</td>
-                        <td>${d.severity}</td>
-                        <td>${d.clinicalNotes}</td>
-                    </tr>
-                `).join('');
-
-                if(patDiags.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No diagnosis records found for this patient.</td></tr>`;
+                if (!patient) {
+                    document.getElementById('report-content').innerHTML = '<p>Patient not found</p>';
+                    return;
                 }
 
-            } catch (err) {
-                layout.showToast('Failed to load report data', 'error');
+                const diagnoses = await api.get('/diagnoses');
+                const patientDiagnoses = diagnoses.filter(d => d.patientId === patientId);
+
+                const reportHtml = `
+                    <div class="report-header">
+                        <div class="clinic-info">
+                            <h2>CareTrack Medical Records System</h2>
+                            <p>Patient Medical Report</p>
+                        </div>
+                        <div class="report-title">
+                            <h1>Medical Report</h1>
+                            <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                        </div>
+                    </div>
+
+                    <div class="patient-section">
+                        <div class="patient-info">
+                            <p><strong>Patient ID:</strong> ${patient.id}</p>
+                            <p><strong>Name:</strong> ${patient.firstName} ${patient.lastName}</p>
+                            <p><strong>DOB:</strong> ${layout.formatDate(patient.dateOfBirth)}</p>
+                            <p><strong>Age:</strong> ${layout.calculateAge(patient.dateOfBirth)}</p>
+                        </div>
+                        <div class="patient-info">
+                            <p><strong>Gender:</strong> ${patient.gender || 'N/A'}</p>
+                            <p><strong>Phone:</strong> ${patient.phoneNumber || 'N/A'}</p>
+                            <p><strong>Email:</strong> ${patient.email || 'N/A'}</p>
+                            <p><strong>Department:</strong> ${patient.department || 'N/A'}</p>
+                        </div>
+                    </div>
+
+                    <h3>Medical History</h3>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>ICD Code</th>
+                                <th>Description</th>
+                                <th>Severity</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${patientDiagnoses.length > 0 ? patientDiagnoses.map(d => `
+                                <tr>
+                                    <td>${d.icdCode || d.id}</td>
+                                    <td>${d.description}</td>
+                                    <td>${d.severity}</td>
+                                    <td>${layout.formatDate(d.diagnosisDate)}</td>
+                                </tr>
+                            `).join('') : '<tr><td colspan="4" style="text-align:center;">No diagnoses on record</td></tr>'}
+                        </tbody>
+                    </table>
+
+                    <p style="margin-top: 40px; font-size: 12px; color: #666; border-top: 1px solid #ddd; padding-top: 20px;">
+                        This report was generated by the CareTrack Medical Records Management System on ${new Date().toLocaleString()}.
+                    </p>
+                `;
+
+                document.getElementById('report-content').innerHTML = reportHtml;
+            } catch (error) {
+                console.error('Error loading report:', error);
+                document.getElementById('report-content').innerHTML = '<p>Error loading patient report. Please try again.</p>';
+                layout.showToast('Failed to load report', 'error');
             }
         });
     </script>

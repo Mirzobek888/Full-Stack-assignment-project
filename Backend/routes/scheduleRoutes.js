@@ -22,6 +22,9 @@ router.use(authMiddleware);
 // Any logged-in staff can view the schedule (doctors, receptionists, admins)
 router.get('/', scheduleController.getSchedules);
 
+// Get a specific schedule by ID
+router.get('/:id', scheduleController.getScheduleById);
+
 // Only administrators can create, update, or delete schedule entries
 router.post('/', requireRole(['administrator']), scheduleController.createSchedule);
 router.put('/:id', requireRole(['administrator']), scheduleController.updateSchedule);

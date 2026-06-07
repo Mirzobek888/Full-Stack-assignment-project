@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = 'https://full-stack-assignment-project.onrender.com/';
 
 async function apiCall(endpoint, method = 'GET', body = null) {
     const token = localStorage.getItem('caretrack_token');
@@ -28,9 +28,10 @@ async function apiCall(endpoint, method = 'GET', body = null) {
             if (response.status === 401) {
                 localStorage.removeItem('caretrack_token');
                 localStorage.removeItem('caretrack_user');
-                window.location.href = '/login.html';
+                window.location.href = 'login.html';
             }
-            throw new Error(data?.error || `HTTP Error: ${response.status}`);
+            const errorMessage = data?.error || `HTTP ${response.status}: ${response.statusText || 'Unknown Error'}`;
+            throw new Error(errorMessage);
         }
 
         return data;

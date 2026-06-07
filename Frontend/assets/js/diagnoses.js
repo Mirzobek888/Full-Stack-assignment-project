@@ -89,7 +89,7 @@ function renderDiagnoses() {
             <td>${layout.formatDate(diag.diagnosisDate)}</td>
             <td>
                 <div class="table-actions">
-                    <a href="diagnosis-detail.html?id=${diag.id}" class="btn-icon" title="View"><i class="fas fa-eye"></i></a>
+                    <a href="diagnosis-detail.html?id=${diag.id}" class="btn-secondary" style="padding: 6px 14px; font-size: 12px;">View</a>
                     <a href="diagnosis-form.html?id=${diag.id}" class="btn-icon" title="Edit"><i class="fas fa-edit"></i></a>
                     ${isAdmin ? `
                     <button class="btn-icon" style="color:var(--danger);" onclick="deleteDiagnosis('${diag.id}')" title="Delete"><i class="fas fa-trash"></i></button>

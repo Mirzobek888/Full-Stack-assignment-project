@@ -13,15 +13,21 @@ const { logAction } = require('../utils/auditLogger');
 // GET SETTINGS: GET /api/settings
 // Returns the current system settings object
 // -------------------------------------------------------
+const SETTINGS_DEFAULTS = {
+    clinicName: 'CareTrack Medical Center',
+    timezone: 'UTC',
+    enableNotifications: true
+};
+
 function getSettings(req, res) {
     // Note: settings.json stores an object ({}), not an array ([])
     // readData normally returns an array, so we handle both cases
-    const settings = readData('settings.json');
+    let settings = readData('settings.json');
 
-    // If readData returned an empty array (meaning the file is new/missing),
-    // send back an empty object instead
-    if (Array.isArray(settings)) {
-        return res.json({});
+    // If readData returned an empty array or null (meaning the file is new/missing),
+    // or if it's not an object, send back defaults
+    if (Array.isArray(settings) || !settings || typeof settings !== 'object') {
+        settings = SETTINGS_DEFAULTS;
     }
 
     // Otherwise send the settings object as-is

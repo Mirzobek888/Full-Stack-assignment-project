@@ -6,6 +6,12 @@ const layout = {
         const sidebar = document.getElementById('sidebar-nav');
         if (!sidebar) return;
 
+        // Check if sidebar already has content to avoid unnecessary re-rendering
+        if (sidebar.children.length > 0) {
+            layout.updateActiveNav();
+            return;
+        }
+
         const currentPath = window.location.pathname.split('/').pop() || 'dashboard.html';
 
         let html = `
@@ -60,6 +66,44 @@ const layout = {
         `;
 
         sidebar.innerHTML = html;
+    },
+
+    updateActiveNav: () => {
+        const sidebar = document.getElementById('sidebar-nav');
+        if (!sidebar) return;
+
+        const currentPath = window.location.pathname.split('/').pop() || 'dashboard.html';
+
+        // Remove active class from all nav items
+        sidebar.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // Add active class to current nav item
+        sidebar.querySelectorAll('.nav-item').forEach(item => {
+            const href = item.getAttribute('href') || '';
+            if (href === '#' && currentPath.includes('logout')) return;
+            
+            if (currentPath.includes('dashboard') && href.includes('dashboard')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('patient') && href.includes('patient')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('doctor') && href.includes('doctor')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('schedule') && href.includes('schedule')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('diagnos') && href.includes('diagnos')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('report') && href.includes('report')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('user') && href.includes('user')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('setting') && href.includes('setting')) {
+                item.classList.add('active');
+            } else if (currentPath.includes('audit') && href.includes('audit')) {
+                item.classList.add('active');
+            }
+        });
     },
 
     renderTopbar: () => {
@@ -122,6 +166,12 @@ const layout = {
         if (!dateString) return '';
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return new Date(dateString).toLocaleDateString('en-US', options);
+    },
+
+    formatDateTime: (dateString) => {
+        if (!dateString) return '';
+        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return new Date(dateString).toLocaleString('en-US', options);
     },
 
     calculateAge: (dob) => {

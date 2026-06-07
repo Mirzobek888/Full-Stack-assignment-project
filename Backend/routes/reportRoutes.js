@@ -1,33 +1,31 @@
-// ============================================================
-// reportRoutes.js - Routes for Report generation
-// ============================================================
-// Reports are generated for patients and stored for later viewing.
-// Only admins and clinicians can access reports.
-//
-// Registered in server.js under: /api/reports
-// Full paths:
-//   GET  /api/reports                          → get all reports
-//   POST /api/reports/generate/patient/:id     → generate report for a patient
-// ============================================================
+// reportRoutes.js - Routes for the Report API
+// =============================================
+// These routes handle all HTTP requests related to reports.
+// The path prefix is /api/reports (defined in server.js)
 
 const express = require('express');
 const router = express.Router();
-
 const reportController = require('../controllers/reportController');
 const authMiddleware = require('../middleware/authMiddleware');
 const requireRole = require('../middleware/roleMiddleware');
 
-// All routes require a valid login token
+// All report routes require authentication
 router.use(authMiddleware);
 
-// All routes require admin or clinician role
-router.use(requireRole(['administrator', 'clinician']));
-
-// GET all previously generated reports
+// GET /api/reports
+// Get all reports
 router.get('/', reportController.getReports);
 
-// POST generate a new report for a specific patient
-// :patientId in the URL is the patient's ID (e.g. PAT-001)
-router.post('/generate/patient/:patientId', reportController.generatePatientReport);
+// GET /api/reports/patient/:patientId
+// Get all reports for a specific patient
+router.get('/patient/:patientId', reportController.getPatientReports);
+
+// POST /api/reports/patient/:patientId
+// Generate a new report for a patient (clinician or admin only)
+router.post('/patient/:patientId', requireRole(['administrator', 'clinician']), reportController.generatePatientReport);
+
+// DELETE /api/reports/:reportId
+// Delete a report (clinician or admin only)
+router.delete('/:reportId', requireRole(['administrator', 'clinician']), reportController.deleteReport);
 
 module.exports = router;

@@ -19,8 +19,9 @@ const sessions = {};
 // The token is what the browser stores and sends back
 // -------------------------------------------------------
 function createSession(user) {
-    // Create a random token by combining random numbers and the current time
-    const token = Math.random().toString(36).substring(2) + Date.now().toString(36);
+    // Create a cryptographically secure random token
+    const crypto = require('crypto');
+    const token = crypto.randomBytes(32).toString('hex');
 
     // Store the user's data under this token key
     sessions[token] = user;

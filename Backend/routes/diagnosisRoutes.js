@@ -20,8 +20,9 @@ const requireRole = require('../middleware/roleMiddleware');
 // All diagnosis routes require a valid login token
 router.use(authMiddleware);
 
-// Both admins and clinicians can view, create, and update diagnoses
-router.get('/', requireRole(['administrator', 'clinician']), diagnosisController.getDiagnoses);
+// Admins, clinicians, and receptionists can view diagnoses
+router.get('/', requireRole(['administrator', 'clinician', 'receptionist']), diagnosisController.getDiagnoses);
+// Admins and clinicians can view individual diagnosis
 router.get('/:id', requireRole(['administrator', 'clinician']), diagnosisController.getDiagnosisById);
 router.post('/', requireRole(['administrator', 'clinician']), diagnosisController.createDiagnosis);
 router.put('/:id', requireRole(['administrator', 'clinician']), diagnosisController.updateDiagnosis);
